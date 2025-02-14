@@ -1,11 +1,6 @@
 <template>
-  <Tutorial/>
+  <div>
+    <h1>クイズ！</h1>
+    <button @click="$router.push('/quiz')">クイズ開始</button>
+  </div>
 </template>
-
-<script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({
-  name: 'IndexPage'
-})
-</script>
