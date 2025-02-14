@@ -44,11 +44,19 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    postcss: { // ここを追加
+    postcss: {
       plugins: {
         tailwindcss: {},
         autoprefixer: {},
       },
+    },
+    extend(config, { isClient }) {
+      if (isClient) {
+        config.module.rules.push({
+          test: /\.csv$/i,
+          loader: 'raw-loader',
+        });
+      }
     }
   }
 }
