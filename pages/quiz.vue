@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>クイズ</h1>
-        <div v-if="currentQuestion">  <!-- currentQuestion が存在する場合のみレンダリング -->
+        <div v-if="currentQuestion"> <!-- currentQuestion が存在する場合のみレンダリング -->
             <p>{{ currentQuestion.questionText }}</p>
             <input type="number" v-model.number="userAnswer">
             <div class="tenkey">
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import quizData from '~/static/quiz-data-temp.csv?raw';
+import quizData from '~/static/quiz-data-1.csv?raw';
 
 export default {
     data() {
@@ -42,24 +42,30 @@ export default {
             const questions = [];
             const lines = quizData.trim().split('\n');
             for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].split(',');
+                if (i === 0 || lines == "" || lines[0] === "#") continue;
+                try {
+                    const line = lines[i].split(',');
 
-                const questionType = line[0];
-                const questionText = line[1];
-                const difficulty = line[2];
+                    const questionType = line[0];
+                    const questionText = line[1];
+                    const difficulty = line[2];
 
-                const answerMatch = questionText.match(/\[(.*?)\]/);
-                const correctAnswer = answerMatch ? parseInt(answerMatch[1]) : null;
-                const processedQuestionText = questionText.replace(/\[.*?\]/, '[]');
+                    const answerMatch = questionText.match(/\[(.*?)\]/);
+                    const correctAnswer = answerMatch ? parseInt(answerMatch[1]) : null;
+                    const processedQuestionText = questionText.replace(/\[.*?\]/, '[]');
 
-                questions.push({
-                    questionType,
-                    questionText: processedQuestionText,
-                    correctAnswer,
-                    difficulty,
-                    userAnswer: null,
-                    isCorrect: null,
-                });
+                    questions.push({
+                        questionType,
+                        questionText: processedQuestionText,
+                        correctAnswer,
+                        difficulty,
+                        userAnswer: null,
+                        isCorrect: null,
+                    });
+                } catch (e) {
+                    console.error('Error parsing line:', lines[i]);
+                    console.error(e);
+                }
             }
 
             // ランダムに10問選択
