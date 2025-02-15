@@ -42,7 +42,7 @@ export default {
             const questions = [];
             const lines = quizData.trim().split('\n');
             for (let i = 0; i < lines.length; i++) {
-                if (i === 0 || lines == "" || lines[0] === "#") continue;
+                if (i === 0 || lines[i] == "" || lines[i][0] === "#") continue;
                 try {
                     const line = lines[i].split(',');
 
