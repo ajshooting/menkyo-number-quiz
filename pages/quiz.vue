@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import quizData from '~/static/quiz-data-1.csv?raw';
+import quizData from '~/assets/quiz-data-1.csv';
 
 export default {
     data() {
@@ -42,7 +42,7 @@ export default {
             const questions = [];
             const lines = quizData.trim().split('\n');
             for (let i = 0; i < lines.length; i++) {
-                if (i === 0 || lines[i] == "" || lines[i][0] === "#") continue;
+                if (i === 0 || lines[i] == "" || lines[i].startsWith("#")) continue;
                 try {
                     const line = lines[i].split(',');
 
