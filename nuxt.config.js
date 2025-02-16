@@ -44,12 +44,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    postcss: {
-      plugins: {
-        tailwindcss: {},
-        autoprefixer: {},
-      },
-    },
+    // postcss の設定は削除 (@nuxtjs/tailwindcss が自動で設定)
     extend(config, { isDev, isClient }) {
       config.module.rules.push({
         test: /\.csv$/,
