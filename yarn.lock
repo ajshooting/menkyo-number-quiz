@@ -5887,9 +5887,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.100
-  resolution: "electron-to-chromium@npm:1.5.100"
-  checksum: 14c54ba03bbe96a7cd9e8ae4eff01e3306e8a6932e643bee2b6543a1a48f5ff7418769736d133542fbf6ec4837e113aeb9b2d8859a3420ddd950d498f7bd2b06
+  version: 1.5.101
+  resolution: "electron-to-chromium@npm:1.5.101"
+  checksum: e8358a7c5638514b8f9483ae45cc33dbbad60ed103a35cf179a823483abf28a75195086de1ec942fa33473156839605e642979ac8adbe6c19da3c3b31acba9cc
   languageName: node
   linkType: hard
 
@@ -9259,6 +9259,7 @@ __metadata:
     eslint-plugin-nuxt: ^4.0.0
     eslint-plugin-vue: ^9.5.1
     nuxt: ^2.15.8
+    pathe: ^2.0.3
     postcss: ^8.4.17
     tailwindcss: 3.3.5
     vue: ^2.7.10
@@ -10553,7 +10554,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathe@npm:^2.0.1, pathe@npm:^2.0.2":
+"pathe@npm:^2.0.1, pathe@npm:^2.0.2, pathe@npm:^2.0.3":
   version: 2.0.3
   resolution: "pathe@npm:2.0.3"
   checksum: 0602bdd4acb54d91044e0c56f1fb63467ae7d44ab3afea1f797947b0eb2b4d1d91cf0d58d065fdb0a8ab0c4acbbd8d3a5b424983eaf10dd5285d37a16f6e3ee9
