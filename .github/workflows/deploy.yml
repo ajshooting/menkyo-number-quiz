@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20"
 
       - name: Enable Corepack
         run: corepack enable
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Generate static files
+      - name: Build and Generate static files
         run: yarn generate
 
       - name: Deploy to GitHub Pages

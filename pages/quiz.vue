@@ -16,85 +16,97 @@
     </div>
 </template>
 
-<script>
-import quizData from '~/assets/quiz-data-1.csv';
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue';
+import { parse } from 'csv-parse';
 
-export default {
-    data() {
-        return {
-            questions: [],
-            currentQuestionIndex: 0,
-            userAnswer: null,
-            score: 0,
-            feedback: '',
-        };
-    },
-    computed: {
-        currentQuestion() {
-            return this.questions[this.currentQuestionIndex];
-        },
-    },
-    mounted() {
-        this.loadQuizData();
-    },
-    methods: {
-        loadQuizData() {
-            // csv-loaderがパースしたデータを処理
-            let questions = quizData.filter(row => row[0] !== '#' && row.length > 1).map(row => { // コメント行と空行をスキップ
-                const questionType = row[0];
-                let questionText = row[1];
-                const difficulty = row[2];
+const questions = reactive<any[]>([]) as any; // 型定義を修正
+const currentQuestionIndex = ref(0);
+const userAnswer = ref<number | null>(null);
+const score = ref(0);
+const feedback = ref('');
 
-                const answerMatch = questionText.match(/\[(.*?)\]/);
-                const correctAnswer = answerMatch ? parseInt(answerMatch[1]) : null;
-                const processedQuestionText = questionText.replace(/\[.*?\]/, '[]');
+const currentQuestion = computed(() => questions[currentQuestionIndex.value]);
 
+onMounted(async () => {
+    await loadQuizData();
+});
 
-                return {
-                    questionType,
-                    questionText: processedQuestionText,
-                    correctAnswer,
-                    difficulty,
-                    userAnswer: null,
-                    isCorrect: null,
-                };
-            });
+const loadQuizData = async () => {
+    try {
+        const response = await fetch('/menkyo-number-quiz/quiz-data-1.csv'); // `app.baseURL` を考慮したパスに変更
+        const csvText = await response.text();
+
+        parse(csvText, {
+            skip_empty_lines: true,
+            skip_lines_with_empty_values: true,
+        }, (err, records) => {
+            if (err) {
+                console.error('CSV パースエラー:', err);
+                return;
+            }
+
+            let parsedQuestions = records
+                .filter(row => row[0] !== '#' && row.length > 1)
+                .map(row => {
+                    const questionType = row[0];
+                    let questionText = row[1];
+                    const difficulty = row[2];
+
+                    const answerMatch = questionText.match(/\[(.*?)\]/);
+                    const correctAnswer = answerMatch ? parseInt(answerMatch[1]) : null;
+                    const processedQuestionText = questionText.replace(/\[.*?\]/, '[]');
+
+                    return {
+                        questionType,
+                        questionText: processedQuestionText,
+                        correctAnswer,
+                        difficulty,
+                        userAnswer: null,
+                        isCorrect: null,
+                    };
+                });
 
             // ランダムに10問選択
-            for (let i = questions.length - 1; i > 0; i--) {
+            for (let i = parsedQuestions.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [questions[i], questions[j]] = [questions[j], questions[i]];
+                [parsedQuestions[i], parsedQuestions[j]] = [parsedQuestions[j], parsedQuestions[i]];
             }
-            this.questions = questions.slice(0, 10);
-        },
-        inputNumber(number) {
-            this.userAnswer = this.userAnswer === null ? number : parseInt(String(this.userAnswer) + String(number));
-        },
-        clearInput() {
-            this.userAnswer = null;
-        },
-        submitAnswer() {
-            if (this.userAnswer === this.currentQuestion.correctAnswer) {
-                this.score++;
-                this.feedback = '正解！';
-                this.questions[this.currentQuestionIndex].isCorrect = true;
-            } else {
-                this.feedback = '不正解... 正解は ' + this.currentQuestion.correctAnswer + ' です。';
-                this.questions[this.currentQuestionIndex].isCorrect = false;
-            }
-            this.questions[this.currentQuestionIndex].userAnswer = this.userAnswer;
+            questions.push(...parsedQuestions.slice(0, 10));
+        });
+    } catch (error) {
+        console.error('CSV ファイルの読み込みエラー:', error);
+    }
+};
 
-            if (this.currentQuestionIndex < this.questions.length - 1) {
-                this.currentQuestionIndex++;
-                this.userAnswer = null;
-                this.feedback = '';
-            } else {
-                // クイズ終了
-                this.$router.push({ path: '/result', query: { score: this.score, questions: JSON.stringify(this.questions) } });
-            }
-        },
-    },
-}
+const inputNumber = (number: number) => {
+    userAnswer.value = userAnswer.value === null ? number : parseInt(String(userAnswer.value) + String(number));
+};
+
+const clearInput = () => {
+    userAnswer.value = null;
+};
+
+const submitAnswer = () => {
+    if (userAnswer.value === currentQuestion.value.correctAnswer) {
+        score.value++;
+        feedback.value = '正解！';
+        questions[currentQuestionIndex.value].isCorrect = true;
+    } else {
+        feedback.value = '不正解... 正解は ' + currentQuestion.value.correctAnswer + ' です。';
+        questions[currentQuestionIndex.value].isCorrect = false;
+    }
+    questions[currentQuestionIndex.value].userAnswer = userAnswer.value;
+
+    if (currentQuestionIndex.value < questions.length - 1) {
+        currentQuestionIndex.value++;
+        userAnswer.value = null;
+        feedback.value = '';
+    } else {
+        // クイズ終了
+        navigateTo({ path: '/result', query: { score: score.value, questions: JSON.stringify(questions) } });
+    }
+};
 </script>
 
 <style scoped>

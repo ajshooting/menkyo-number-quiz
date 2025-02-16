@@ -13,22 +13,17 @@
                 <p>結果: {{ q.isCorrect ? '正解' : '不正解' }}</p>
             </li>
         </ul>
-        <button @click="$router.push('/')">トップへ戻る</button>
+        <button @click="navigateTo('/')">トップへ戻る</button>
     </div>
 </template>
 
-<script>
-export default {
-    computed: {
-        score() {
-            return parseInt(this.$route.query.score);
-        },
-        questions() {
-            return JSON.parse(this.$route.query.questions);
-        },
-        totalQuestions() {
-            return this.questions.length;
-        }
-    },
-}
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute, navigateTo } from 'nuxt/app';
+
+const route = useRoute();
+
+const score = computed(() => parseInt(route.query.score as string));
+const questions = computed(() => JSON.parse(route.query.questions as string));
+const totalQuestions = computed(() => questions.value.length);
 </script>
