@@ -61,5 +61,8 @@ export default {
         }
       });
     }
+  },
+  router: {
+    base: '/menkyo-number-quiz/'
   }
 }
