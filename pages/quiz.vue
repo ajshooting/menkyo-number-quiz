@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>クイズ</h1>
-        <div v-if="currentQuestion"> <!-- currentQuestion が存在する場合のみレンダリング -->
+        <div v-if="currentQuestion">
             <p>{{ currentQuestion.questionText }}</p>
             <input type="number" v-model.number="userAnswer">
             <div class="tenkey">
@@ -12,7 +12,7 @@
             </div>
             <p v-if="feedback">{{ feedback }}</p>
         </div>
-        <p v-else>クイズデータを読み込み中...</p> <!-- ローディング中の表示 -->
+        <p v-else>クイズデータを読み込み中...</p>
     </div>
 </template>
 
@@ -39,34 +39,26 @@ export default {
     },
     methods: {
         loadQuizData() {
-            const questions = [];
-            const lines = quizData.trim().split('\n');
-            for (let i = 0; i < lines.length; i++) {
-                if (i === 0 || lines[i] == "" || lines[i].startsWith("#")) continue;
-                try {
-                    const line = lines[i].split(',');
+            // csv-loaderがパースしたデータを処理
+            let questions = quizData.filter(row => row[0] !== '#' && row.length > 1).map(row => { // コメント行と空行をスキップ
+                const questionType = row[0];
+                let questionText = row[1];
+                const difficulty = row[2];
 
-                    const questionType = line[0];
-                    const questionText = line[1];
-                    const difficulty = line[2];
+                const answerMatch = questionText.match(/\[(.*?)\]/);
+                const correctAnswer = answerMatch ? parseInt(answerMatch[1]) : null;
+                const processedQuestionText = questionText.replace(/\[.*?\]/, '[]');
 
-                    const answerMatch = questionText.match(/\[(.*?)\]/);
-                    const correctAnswer = answerMatch ? parseInt(answerMatch[1]) : null;
-                    const processedQuestionText = questionText.replace(/\[.*?\]/, '[]');
 
-                    questions.push({
-                        questionType,
-                        questionText: processedQuestionText,
-                        correctAnswer,
-                        difficulty,
-                        userAnswer: null,
-                        isCorrect: null,
-                    });
-                } catch (e) {
-                    console.error('Error parsing line:', lines[i]);
-                    console.error(e);
-                }
-            }
+                return {
+                    questionType,
+                    questionText: processedQuestionText,
+                    correctAnswer,
+                    difficulty,
+                    userAnswer: null,
+                    isCorrect: null,
+                };
+            });
 
             // ランダムに10問選択
             for (let i = questions.length - 1; i > 0; i--) {
