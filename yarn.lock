@@ -5415,6 +5415,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csv-loader@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "csv-loader@npm:3.0.5"
+  dependencies:
+    loader-utils: ^2.0.0
+    papaparse: ^5.2.0
+  checksum: 9a4de4dd7bc29aead2ca0134f4b970068d465f804bd256f11be6687f18d535a18bf9edabee55edff02c609fb7c3156bdadc33b04fa8b5df84eb2bef6dffe16d4
+  languageName: node
+  linkType: hard
+
 "cuint@npm:^0.2.2":
   version: 0.2.2
   resolution: "cuint@npm:0.2.2"
@@ -9255,12 +9265,12 @@ __metadata:
     "@nuxtjs/eslint-module": ^3.1.0
     "@nuxtjs/tailwindcss": ^6.13.1
     core-js: ^3.25.3
+    csv-loader: ^3.0.5
     eslint: ^8.24.0
     eslint-plugin-nuxt: ^4.0.0
     eslint-plugin-vue: ^9.5.1
     nuxt: ^2.15.8
     postcss: ^8.4.17
-    raw-loader: ^4.0.2
     tailwindcss: 3.3.5
     vue: ^2.7.10
     vue-server-renderer: ^2.7.10
@@ -10344,6 +10354,13 @@ __metadata:
   version: 1.0.11
   resolution: "pako@npm:1.0.11"
   checksum: 1be2bfa1f807608c7538afa15d6f25baa523c30ec870a3228a89579e474a4d992f4293859524e46d5d87fd30fa17c5edf34dbef0671251d9749820b488660b16
+  languageName: node
+  linkType: hard
+
+"papaparse@npm:^5.2.0":
+  version: 5.5.2
+  resolution: "papaparse@npm:5.5.2"
+  checksum: 59d5c6aca4fe1621cc12f66c024d0ea651bb4aad77d50c2d66a3e3c1ba60e992e2f52762f783fc2531348120c302ab272d8e448d853652232c9c742cdb666fb8
   languageName: node
   linkType: hard
 
@@ -12114,18 +12131,6 @@ __metadata:
   version: 1.2.1
   resolution: "range-parser@npm:1.2.1"
   checksum: 0a268d4fea508661cf5743dfe3d5f47ce214fd6b7dec1de0da4d669dd4ef3d2144468ebe4179049eff253d9d27e719c88dae55be64f954e80135a0cada804ec9
-  languageName: node
-  linkType: hard
-
-"raw-loader@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "raw-loader@npm:4.0.2"
-  dependencies:
-    loader-utils: ^2.0.0
-    schema-utils: ^3.0.0
-  peerDependencies:
-    webpack: ^4.0.0 || ^5.0.0
-  checksum: 51cc1b0d0e8c37c4336b5318f3b2c9c51d6998ad6f56ea09612afcfefc9c1f596341309e934a744ae907177f28efc9f1654eacd62151e82853fcc6d37450e795
   languageName: node
   linkType: hard
 
