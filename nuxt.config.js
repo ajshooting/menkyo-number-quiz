@@ -6,7 +6,7 @@ export default {
   head: {
     title: 'menkyo-number-quiz',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       { charset: 'utf-8' },
@@ -50,13 +50,16 @@ export default {
         autoprefixer: {},
       },
     },
-    extend(config, { isClient }) {
-      if (isClient) {
-        config.module.rules.push({
-          test: /\.csv$/i,
-          loader: 'raw-loader',
-        });
-      }
+    extend(config, { isDev, isClient }) {
+      config.module.rules.push({
+        test: /\.csv$/,
+        loader: 'csv-loader',
+        options: {
+          dynamicTyping: true, // 数値と真偽値を自動変換
+          header: false,       // 1行目をヘッダーとして扱わない
+          skipEmptyLines: true,  // 空行をスキップ
+        }
+      });
     }
   }
 }
