@@ -1,31 +1,9 @@
 <template>
-  <footer class="site-footer">
+  <footer class="fixed bottom-0 w-full bg-gray-100 text-center py-2">
     <div class="footer-content">
-      <a href="https://twitter.com/ajshooting" target="_blank">Twitter</a> |
-      <a href="https://github.com/ajshooting/menkyo-number-quiz" target="_blank">GitHub</a>
+      <a href="https://twitter.com/ajshooting" target="_blank" class="mx-2 text-gray-800 hover:underline">Twitter</a> |
+      <a href="https://github.com/ajshooting/menkyo-number-quiz" target="_blank"
+        class="mx-2 text-gray-800 hover:underline">GitHub</a>
     </div>
   </footer>
 </template>
-
-<style>
-/* tailwind しないの〜？ */
-.site-footer {
-  background-color: #f1f1f1;
-  text-align: center;
-  padding: 10px 0;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  margin-top: 30px;
-}
-
-.footer-content a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: #333;
-}
-
-.footer-content a:hover {
-  text-decoration: underline;
-}
-</style>
