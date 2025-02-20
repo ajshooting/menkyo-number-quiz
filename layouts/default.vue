@@ -1,10 +1,9 @@
 <template>
-
-  <div>
-    <main>
+  <main>
+    <div class="min-h-[calc(100vh-40px)]">
+      <Header />
       <NuxtPage />
-      <Footer />
-    </main>
-
-  </div>
+    </div>
+    <Footer />
+  </main>
 </template>
