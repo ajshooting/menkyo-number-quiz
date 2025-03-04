@@ -4,7 +4,7 @@
     <div v-if="currentQuestion">
       <p class="h-[7em]">{{ currentQuestion.questionText }}</p>
 
-      <p>難易度: {{ currentQuestion.difficulty }}</p>
+      <!-- <p>難易度: {{ currentQuestion.difficulty }}</p> -->
       <SignificantFigures :num="currentQuestion.correctAnswer" />
 
       <input type="text" v-model="userAnswer" class="border border-gray-300 rounded p-2 mb-4 w-full md:w-1/2" readonly>
