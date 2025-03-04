@@ -41,6 +41,8 @@
 
 <script setup lang="ts">
 import Papa from 'papaparse';
+import { ref, reactive, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 interface Question {
   questionType: string;
@@ -58,11 +60,11 @@ const score = ref(0);
 const feedback = ref('');
 const loading = ref(false);
 const isCorrectFeedback = ref<boolean | null>(null);
-const quizDataFile = 'quiz-data-1.csv';
 const numberOfQuestions = 10;
 const numbers = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
 const currentQuestion = computed(() => questions[currentQuestionIndex.value]);
+const route = useRoute();
 
 onMounted(() => {
   loadQuizData();
@@ -71,12 +73,24 @@ onMounted(() => {
 const loadQuizData = async () => {
   loading.value = true;
   feedback.value = '';
+
+  const level = route.query.level as string;
+  const stage = parseInt(route.query.stage as string);
+
   try {
-    const response = await fetch(quizDataFile);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    let csvText = '';
+
+    if (stage === 1) {
+      const response = await fetch('quiz-data-1.csv');
+      csvText = await response.text();
+    } else if (stage === 2) {
+      const response = await fetch('quiz-data-2.csv');
+      csvText = await response.text();
+    } else if (stage === 0) {
+      const response1 = await fetch('quiz-data-1.csv');
+      const response2 = await fetch('quiz-data-2.csv');
+      csvText = await response1.text() + "\n" + await response2.text();
     }
-    const csvText = await response.text();
 
     const parseResult = await new Promise<Papa.ParseResult<string[]>>((resolve, reject) => {
       Papa.parse(csvText, {
