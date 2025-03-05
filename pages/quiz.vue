@@ -1,6 +1,5 @@
 <template>
   <div class="container mx-auto p-4">
-    <div>問題</div>
     <div v-if="currentQuestion">
       <p class="h-[7em]">{{ currentQuestion.questionText }}</p>
 
@@ -111,7 +110,7 @@ const loadQuizData = async () => {
     loading.value = false;
 
     let parsedQuestions: Question[] = records
-      .filter((row: any) => row[0] !== '#' && row.length > 1)
+      .filter((row: any) => row[0] !== '#' && row.length > 1 && (row[2] === level || level === '0'))
       .map((row: any) => {
         const questionType = row[0] as string;
         let questionText = row[1] as string;
