@@ -110,7 +110,7 @@ const loadQuizData = async () => {
     loading.value = false;
 
     let parsedQuestions: Question[] = records
-      .filter((row: any) => row[0] !== '#' && row.length > 1 && (row[2] === level || level === '0'))
+      .filter((row: any) => row[0][0] !== '#' && row.length > 1 && (row[2] === level || level === '0'))
       .map((row: any) => {
         const questionType = row[0] as string;
         let questionText = row[1] as string;
