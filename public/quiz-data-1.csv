@@ -1,5 +1,4 @@
-type,question,difficulty,page,comment
-
+# type,question,difficulty,page,comment
 # 難易度 : 1-本文中に記載あり 2-本文傍に記載あり 3-コラムや重要度が低いと独断したもの 4-知らなくて当然のもの
 
 1,交差点で以外で、横断歩道も自転車横断帯も踏切もないところでの停止位置は、警官や交通巡視員の[1]m手前,1,25
