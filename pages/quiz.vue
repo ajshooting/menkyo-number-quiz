@@ -117,9 +117,26 @@ const loadQuizData = async () => {
         let questionText = row[1] as string;
         const difficulty = row[2] as string;
 
-        const answerMatch = questionText.match(/\[(.*?)\]/);
-        const correctAnswer = answerMatch ? parseFloat(answerMatch[1]) : 0;
-        const processedQuestionText = questionText.replace(/\[.*?\]/, '[]');
+        // [数字]の全マッチを取得
+        const answerMatches = [...questionText.matchAll(/\[(.*?)\]/g)];
+        let correctAnswer = 0;
+        let processedQuestionText = questionText;
+        if (answerMatches.length > 0) {
+          // ランダムで1つ選ぶ
+          const maskIndex = Math.floor(Math.random() * answerMatches.length);
+          correctAnswer = parseFloat(answerMatches[maskIndex][1]);
+          // 選ばれた部分だけ[]に、他はそのまま
+          let replaced = 0;
+          processedQuestionText = questionText.replace(/\[(.*?)\]/g, (match, p1) => {
+            if (replaced === maskIndex) {
+              replaced++;
+              return '[]';
+            } else {
+              replaced++;
+              return match;
+            }
+          });
+        }
 
         return {
           questionType,
