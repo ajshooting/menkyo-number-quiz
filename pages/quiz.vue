@@ -1,42 +1,41 @@
 <template>
-  <div class="container mx-auto p-4">
-    <div v-if="currentQuestion">
-      <p class="h-[7em]">{{ currentQuestion.questionText }}</p>
-
-      <!-- <p>難易度: {{ currentQuestion.difficulty }}</p> -->
-      <HintSelector
-        :answer="currentQuestion.correctAnswer"
-        :usedHint="usedHint"
-        @hint-used="usedHint = true"
-      />
-
-      <input type="text" v-model="userAnswer" class="border border-gray-300 rounded p-2 mb-4 w-full md:w-1/2" readonly>
-
-      <div class="grid grid-cols-3 gap-4 max-w-xs mx-auto">
-        <button v-for="n in numbers" :key="n" @click="inputString(String(n))"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          {{ n }}
-        </button>
-        <button @click="inputString('0')"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">0</button>
-        <button @click="inputString('.')"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">.</button>
-        <button @click="clearInput"
-          class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">C</button>
-        <button @click="submitAnswer"
-          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded col-span-3">回答</button>
+  <div class="container mx-auto p-4 flex justify-center">
+    <div class="w-full max-w-md md:max-w-lg lg:max-w-xl">
+      <div v-if="currentQuestion">
+        <p class="h-[7em] md:h-[7em] text-base md:text-lg flex items-center justify-center">{{
+          currentQuestion.questionText }}</p>
+        <HintSelector :answer="currentQuestion.correctAnswer" :usedHint="usedHint" @hint-used="usedHint = true" />
+        <div class="flex justify-center">
+          <input type="text" v-model="userAnswer"
+            class="border border-gray-300 rounded p-2 mb-2 w-full md:w-2/3 text-center" readonly>
+        </div>
+        <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto mb-2" style="min-height: 180px;">
+          <button v-for="n in numbers" :key="n" @click="inputString(String(n))"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            {{ n }}
+          </button>
+          <button @click="inputString('0')"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">0</button>
+          <button @click="inputString('.')"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">.</button>
+          <button @click="clearInput"
+            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">C</button>
+          <button @click="submitAnswer"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded col-span-3">回答</button>
+        </div>
+        <p v-if="feedback" :class="{ 'text-green-500': isCorrectFeedback, 'text-red-500': !isCorrectFeedback }"
+          class="mt-4 text-center">{{ feedback }}</p>
       </div>
-
-      <p v-if="feedback" :class="{ 'text-green-500': isCorrectFeedback, 'text-red-500': !isCorrectFeedback }"
-        class="mt-4">{{ feedback }}</p>
-    </div>
-    <div v-else-if="loading">
-      <p class="text-gray-500">クイズデータを読み込み中...</p>
-    </div>
-    <div v-else>
-      <p class="text-red-500">クイズデータの読み込みに失敗しました</p>
-      <button @click="retryLoadQuizData"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">再読み込み</button>
+      <div v-else-if="loading">
+        <p class="text-gray-500 text-center">クイズデータを読み込み中...</p>
+      </div>
+      <div v-else>
+        <p class="text-red-500 text-center">クイズデータの読み込みに失敗しました</p>
+        <div class="flex justify-center">
+          <button @click="retryLoadQuizData"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">再読み込み</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>

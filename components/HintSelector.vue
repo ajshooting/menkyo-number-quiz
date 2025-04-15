@@ -1,20 +1,20 @@
 <template>
-    <div class="my-4">
-        <label class="block font-semibold mb-1">ヒントを選択:</label>
-        <div class="flex gap-2 mb-2">
-            <button v-for="hint in hintTypes" :key="hint.key"
-                @click="handleSelect(hint.key)"
-                :disabled="usedHint"
+    <div class="my-2">
+        <label class="block font-semibold mb-1 text-sm md:text-base">ヒントを選択:</label>
+        <div class="flex flex-wrap gap-1 md:gap-2 mb-2 justify-center md:justify-start">
+            <button v-for="hint in hintTypes" :key="hint.key" @click="handleSelect(hint.key)" :disabled="usedHint"
                 :class="[
-                    'px-3 py-1 rounded border',
+                    'px-2 py-1 md:px-4 md:py-2 rounded border',
+                    'text-xs md:text-base',
+                    'whitespace-nowrap',
                     selectedHint === hint.key ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-blue-500 border-blue-500 hover:bg-blue-50',
                     usedHint && selectedHint !== hint.key ? 'opacity-50 cursor-not-allowed' : ''
-                ]">
+                ]" style="min-width: 4.5em;">
                 {{ hint.label }}
             </button>
         </div>
         <div v-if="selectedHint">
-            <div class="p-3 bg-gray-50 border rounded">
+            <div class="p-2 md:p-3 bg-gray-50 border rounded text-sm md:text-base">
                 <span v-if="selectedHint === 'sigfig'">有効数字: {{ significantFigures }}</span>
                 <span v-else-if="selectedHint === 'factors'">素因数の数: {{ numPrimeFactors }}</span>
                 <span v-else-if="selectedHint === 'digits'">桁数: {{ numDigits }}</span>
