@@ -4,7 +4,7 @@
       <p class="h-[7em]">{{ currentQuestion.questionText }}</p>
 
       <!-- <p>難易度: {{ currentQuestion.difficulty }}</p> -->
-      <SignificantFigures :num="currentQuestion.correctAnswer" />
+      <HintSelector :answer="currentQuestion.correctAnswer" />
 
       <input type="text" v-model="userAnswer" class="border border-gray-300 rounded p-2 mb-4 w-full md:w-1/2" readonly>
 
@@ -42,6 +42,7 @@
 import Papa from 'papaparse';
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import HintSelector from '~/components/HintSelector.vue';
 
 interface Question {
   questionType: string;
