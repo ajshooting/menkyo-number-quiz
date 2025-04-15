@@ -4,7 +4,11 @@
       <p class="h-[7em]">{{ currentQuestion.questionText }}</p>
 
       <!-- <p>難易度: {{ currentQuestion.difficulty }}</p> -->
-      <HintSelector :answer="currentQuestion.correctAnswer" />
+      <HintSelector
+        :answer="currentQuestion.correctAnswer"
+        :usedHint="usedHint"
+        @hint-used="usedHint = true"
+      />
 
       <input type="text" v-model="userAnswer" class="border border-gray-300 rounded p-2 mb-4 w-full md:w-1/2" readonly>
 
@@ -62,6 +66,7 @@ const loading = ref(false);
 const isCorrectFeedback = ref<boolean | null>(null);
 const numberOfQuestions = 10;
 const numbers = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+const usedHint = ref(false);
 
 const currentQuestion = computed(() => questions[currentQuestionIndex.value]);
 const route = useRoute();
@@ -181,6 +186,14 @@ const clearInput = () => {
   userAnswer.value = null;
 };
 
+const goToNextQuestion = () => {
+  currentQuestionIndex.value++;
+  userAnswer.value = null;
+  feedback.value = '';
+  isCorrectFeedback.value = null;
+  usedHint.value = false;
+};
+
 const submitAnswer = () => {
   if (userAnswer.value === null) {
     feedback.value = '回答を入力してください。';
@@ -209,10 +222,7 @@ const submitAnswer = () => {
   questions[currentQuestionIndex.value].userAnswer = userAnswerNumber;
 
   if (currentQuestionIndex.value < questions.length - 1) {
-    currentQuestionIndex.value++;
-    userAnswer.value = null;
-    feedback.value = '';
-    isCorrectFeedback.value = null;
+    goToNextQuestion();
   } else {
     navigateTo({ path: '/result', query: { score: score.value, questions: JSON.stringify(questions) } });
   }

@@ -2,10 +2,14 @@
     <div class="my-4">
         <label class="block font-semibold mb-1">ヒントを選択:</label>
         <div class="flex gap-2 mb-2">
-            <button v-for="hint in hintTypes" :key="hint.key" @click="selectHint(hint.key)" :class="[
-                'px-3 py-1 rounded border',
-                selectedHint === hint.key ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-blue-500 border-blue-500 hover:bg-blue-50'
-            ]">
+            <button v-for="hint in hintTypes" :key="hint.key"
+                @click="handleSelect(hint.key)"
+                :disabled="usedHint"
+                :class="[
+                    'px-3 py-1 rounded border',
+                    selectedHint === hint.key ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-blue-500 border-blue-500 hover:bg-blue-50',
+                    usedHint && selectedHint !== hint.key ? 'opacity-50 cursor-not-allowed' : ''
+                ]">
                 {{ hint.label }}
             </button>
         </div>
@@ -22,9 +26,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
-const props = defineProps<{ answer: number }>();
+const props = defineProps<{
+    answer: number,
+    usedHint: boolean,
+}>();
+const emit = defineEmits(['hint-used', 'reset-hint']);
 
 const hintTypes = [
     { key: 'sigfig', label: '有効数字' },
@@ -35,9 +43,17 @@ const hintTypes = [
 ];
 
 const selectedHint = ref<string | null>(null);
-const selectHint = (key: string) => {
-    selectedHint.value = key;
-};
+
+function handleSelect(key: string) {
+    if (!props.usedHint) {
+        selectedHint.value = key;
+        emit('hint-used');
+    }
+}
+
+watch(() => props.usedHint, (val) => {
+    if (!val) selectedHint.value = null;
+});
 
 const significantFigures = computed(() => {
     if (props.answer === undefined || props.answer === null) return 'N/A';
